@@ -1,7 +1,4 @@
-`ifndef UART_RX_SV
-`define UART_RX_SV
-
-`include "clock_mul.sv"
+//`include "clock_mul.sv"
 
 module uart_rx (
     input clk,
@@ -46,7 +43,6 @@ end
 // STATE MACHINE: Use the UART clock to drive that state machine that receves a byte from the rx signal
 integer state = INIT;
 integer bit_index = 0;
-reg [7:0] rx_shift = 8'b0;
 
 always @(posedge uart_clk) begin
     rx_ready_uart <= 1'b0;
@@ -54,7 +50,6 @@ always @(posedge uart_clk) begin
     case (state)
         INIT: begin
             rx_data <= 8'b0;
-            rx_shift <= 8'b0;
             bit_index <= 0;
             state <= IDLE;
         end
@@ -62,13 +57,13 @@ always @(posedge uart_clk) begin
         IDLE: begin
             bit_index <= 0;
             if (rx == 1'b0) begin
-                rx_shift <= 8'b0;
+                rx_data <= 8'b0;
                 state <= RX_DATA;
             end
         end
 
         RX_DATA: begin
-            rx_shift <= {rx, rx_shift[7:1]};
+            rx_data <= {rx, rx_data[7:1]};
             if (bit_index < DATA_BITS - 1) begin
                 bit_index <= bit_index + 1;
             end
@@ -80,7 +75,6 @@ always @(posedge uart_clk) begin
 
         STOP: begin
             if (rx == 1'b1) begin
-                rx_data <= rx_shift;
                 rx_ready_uart <= 1'b1;
             end
             state <= IDLE;
@@ -89,5 +83,3 @@ always @(posedge uart_clk) begin
 end
 
 endmodule
-
-`endif
