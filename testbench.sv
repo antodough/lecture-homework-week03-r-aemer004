@@ -1,7 +1,6 @@
 `timescale 1ns / 1ps
 
-//`include "uart_rx.sv"
-// commented out to compile verilog command 
+`include "uart_rx.sv"
 
 module testbench();
 

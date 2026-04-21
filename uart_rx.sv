@@ -1,5 +1,7 @@
-//`include "clock_mul.sv"
-// commented out to compile verilog command 
+`ifndef UART_RX_SV
+`define UART_RX_SV
+
+`include "clock_mul.sv"
 
 module uart_rx (
     input clk,
@@ -60,12 +62,13 @@ always @(posedge uart_clk) begin
         IDLE: begin
             bit_index <= 0;
             if (rx == 1'b0) begin
+                rx_shift <= 8'b0;
                 state <= RX_DATA;
             end
         end
 
         RX_DATA: begin
-            rx_shift[bit_index] <= rx;
+            rx_shift <= {rx, rx_shift[7:1]};
             if (bit_index < DATA_BITS - 1) begin
                 bit_index <= bit_index + 1;
             end
@@ -86,3 +89,5 @@ always @(posedge uart_clk) begin
 end
 
 endmodule
+
+`endif

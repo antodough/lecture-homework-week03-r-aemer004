@@ -1,3 +1,6 @@
+`ifndef CLOCK_MUL_SV
+`define CLOCK_MUL_SV
+
 module clock_mul #(
     parameter SRC_FREQ = 8, 
     parameter OUT_FREQ = 1
@@ -30,3 +33,5 @@ end
 assign out_clk = out_clk_reg;
 
 endmodule
+
+`endif
