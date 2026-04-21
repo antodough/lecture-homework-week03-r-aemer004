@@ -1,4 +1,4 @@
-//`include "clock_mul.sv"
+`include "clock_mul.sv"
 
 module uart_rx (
     input clk,
