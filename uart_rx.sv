@@ -1,4 +1,4 @@
-`include "clock_mul.sv"
+//`include "clock_mul.sv"
 // commented out to compile verilog command 
 
 module uart_rx (
